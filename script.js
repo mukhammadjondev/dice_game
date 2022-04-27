@@ -10,22 +10,43 @@ let activePlayer = 0
 let totalScore = [0, 0]
 let gameOver = false
 
+btnRoll.addEventListener('click', btnRollFunc)
+btnHold.addEventListener('click', btnHoldFunc)
+btnNew.addEventListener('click', btnNewFunc)
 
-btnRoll.addEventListener('click', ()=> {
+document.addEventListener('keydown', (e)=> {
+    if(e.code == 'Space') {
+        btnRollFunc()
+    }
+})
+
+document.addEventListener('keydown', (e)=> {
+    if(e.key == 'Enter') {
+        btnHoldFunc()
+    }
+})
+
+document.addEventListener('keydown', (e)=> {
+    if(e.key == 'Backspace') {
+        btnNewFunc()
+    }
+})
+
+function btnRollFunc() {
     dice.classList.remove('hidden')
 
     const randomDice = Math.floor(Math.random() * 6) + 1
     if(!gameOver) {
-        dice.src = `dice-${randomDice}.png`
+        dice.src = `./image/dice-${randomDice}.png`
         currentScore += randomDice
         document.querySelector(`#current-${activePlayer}`).textContent = currentScore
         if (randomDice == 1) {
             switchPlayer()
         }
     }
-})
+}
 
-btnHold.addEventListener('click', () => {
+function btnHoldFunc() {
     if(!gameOver) {
         totalScore[activePlayer] += currentScore
         document.querySelector(`#score-${activePlayer}`).textContent = totalScore[activePlayer]
@@ -38,7 +59,7 @@ btnHold.addEventListener('click', () => {
             switchPlayer()
         }
     }
-})
+}
 
 function switchPlayer() {
     document.querySelector(`#current-${activePlayer}`).textContent = 0
@@ -48,7 +69,7 @@ function switchPlayer() {
     document.querySelector('.player-1').classList.toggle('player-active')
 }
 
-btnNew.addEventListener('click', ()=> {
+function btnNewFunc() {
     dice.classList.add('hidden')
     document.querySelector(`.player-0`).classList.remove('player-winner')
     document.querySelector('.player-0').classList.add('player-active')
@@ -61,4 +82,4 @@ btnNew.addEventListener('click', ()=> {
     activePlayer = 0
     totalScore = [0, 0]
     gameOver = false
-})
+}
